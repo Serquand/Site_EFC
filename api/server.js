@@ -51,7 +51,8 @@ io.on("connection", socket => {
                 if(sessions[msg].game.selectedPiece) {
                     const infoMove = sessions[msg].game.movePiece(indexClick)
                     if(typeof(infoMove) === 'object') io.to(["players - " + msg, "Watchers " + msg]).emit("moveTo", infoMove.map, infoMove.pgn)
-                    else socket.emit("promotion", sessions[msg].game.game.turn())
+                    else if(sessions[msg].game.isPromoAllowed(indexClick)) socket.emit("promotion", sessions[msg].game.game.turn())
+                    else socket.emit("cancel")
                 } else if(sessions[msg].game.getGoodPiece(indexClick)) {
                     sessions[msg].game.selectedPiece = indexClick
                     const possibleMove = sessions[msg].game.getPossibleMove(indexClick)
@@ -62,7 +63,6 @@ io.on("connection", socket => {
         })
 
         socket.on("promotionChoice", choice => {
-            console.log(choice)
             const infoMove = sessions[msg].game.createPromotion(choice)
             io.to(["players - " + msg, "Watchers " + msg]).emit("moveTo", infoMove.map, infoMove.pgn)
         })

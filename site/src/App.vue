@@ -164,6 +164,7 @@ export default {
         this.socket.on("moveTo", (chessboard, pgn) => this.displayMove(chessboard, pgn))
         this.socket.on("showMoveTab", possibleMove => this.displayPossibleMove(possibleMove))
         this.socket.on("promotion", promotion => this.displayPromotion(promotion))
+        this.socket.on("cancel", () => this.possibleMove = [-1])
     }, 
 
     methods: {        

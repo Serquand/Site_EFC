@@ -1,7 +1,5 @@
 import { Chess } from 'chess.js'
 
-const chess = new Chess()
-
 export default class Game {
     constructor(firstPlayer, gameMode, idGame) {
         this.game = new Chess()
@@ -24,15 +22,9 @@ export default class Game {
     }
 
     transformSquareInIndex(square) {
-        const rockSquare = []
-        if(square.includes('O-O')) {
-            if(square.includes('Kf1')) rockSquare.push(62)
-            else rockSquare.push(6)
-        } 
-        if(square.includes('O-O-O')) {
-            if(square.includes('Kd1')) rockSquare.push(58)
-            else rockSquare.push(2)
-        }
+        let rockSquare = []
+        if(square.includes('O-O')) rockSquare.push(square.includes('Kf1') ? 62 : 6)
+        if(square.includes('O-O-O')) rockSquare.push(square.includes('Kd1') ? 58 : 2)
 
         for(let i = 0; i < square.length; i++) {
             square[i] = square[i].split("=")[0]
@@ -44,13 +36,23 @@ export default class Game {
         return square.concat(rockSquare)
     }
 
+    isPromoAllowed(indexClick) {
+        const arrivingSquare = this.transformIndexInSquare(indexClick)
+        const possibleMove = this.game.moves({ square: this.transformIndexInSquare(this.selectedPiece) })
+        for (const move of possibleMove) {
+            if(move.split("=")[0].substring(move.split("=")[0].length - 2) === arrivingSquare) {
+                this.waitingPromotion = indexClick
+                return true
+            }
+        }   
+        this.selectedPiece = false
+        return false
+    }
+
     movePiece(indexClick) {
         const possibleMove = this.game.moves({ square: this.transformIndexInSquare(this.selectedPiece) })
         for (const moves of possibleMove) {
-            if(moves.includes("=")) {
-                this.waitingPromotion = indexClick
-                return false
-            }
+            if(moves.includes("=")) return false
         }
 
         this.game.move({ from: this.transformIndexInSquare(this.selectedPiece), to: this.transformIndexInSquare(indexClick) })

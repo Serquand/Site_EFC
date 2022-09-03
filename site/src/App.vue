@@ -14,6 +14,14 @@
                 ></div>
             </div>
         </div>
+        <ul class="pgn-container">
+            <li 
+                :key="move" 
+                v-for="(move, index) in pgn"
+            >
+                {{ (index + 1) + ". " + move.split(" ")[0] + " | " +  (move.split(" ")[1] == undefined ? '' : move.split(" ")[1]) }}
+            </li>
+        </ul>
         
         <div 
             class="modal modal-init"
@@ -79,14 +87,7 @@
         cursor: pointer;
     }
 
-    .chessboard-main-container :not(:is( :nth-child(1), :nth-child(3), :nth-child(5), :nth-child(7), 
-                                    :nth-child(10), :nth-child(12), :nth-child(14), :nth-child(16), 
-                                    :nth-child(19), :nth-child(21), :nth-child(23), :nth-child(17), 
-                                    :nth-child(28), :nth-child(30), :nth-child(32), :nth-child(26), 
-                                    :nth-child(37), :nth-child(35), :nth-child(39), :nth-child(33),
-                                    :nth-child(42), :nth-child(44), :nth-child(46), :nth-child(48),
-                                    :nth-child(49), :nth-child(51), :nth-child(53), :nth-child(55),
-                                    :nth-child(58), :nth-child(60), :nth-child(62), :nth-child(64))) {
+    .chessboard-main-container :not(:is( :nth-child(1), :nth-child(3), :nth-child(5), :nth-child(7), :nth-child(10), :nth-child(12), :nth-child(14), :nth-child(16), :nth-child(19), :nth-child(21), :nth-child(23), :nth-child(17), :nth-child(28), :nth-child(30), :nth-child(32), :nth-child(26), :nth-child(37), :nth-child(35), :nth-child(39), :nth-child(33), :nth-child(42), :nth-child(44), :nth-child(46), :nth-child(48), :nth-child(49), :nth-child(51), :nth-child(53), :nth-child(55), :nth-child(58), :nth-child(60), :nth-child(62), :nth-child(64))) {
         background-color: green;
         border: .5px solid black;
     }
@@ -168,7 +169,13 @@ export default {
     methods: {        
         displayPgn(pgn) {
             let pgnTemp = pgn.split(".")
-            console.log(pgn, pgnTemp);
+            pgnTemp.shift()
+            for(let i = 0; i < pgnTemp.length; i++) {
+                pgnTemp[i] = pgnTemp[i].trim()
+                if(pgnTemp[i].split(" ").length == 3) pgnTemp[i] = pgnTemp[i].substring(0, pgnTemp[i].length - 1)
+                pgnTemp[i] = pgnTemp[i].trim()
+            }
+            this.pgn = pgnTemp
         },
 
         displayMove(chessboard, pgn) {
@@ -178,13 +185,11 @@ export default {
         },
 
         displayPossibleMove(possibleMove) {
-            console.log(possibleMove);
             this.possibleMove = [-1]
             for(let i = 0; i < possibleMove.length; i++) this.possibleMove.push(possibleMove[i])
         },
 
         interactChessboard(index) {
-            console.log(index)
             this.socket.emit("newInfoClick", index)
         }, 
 

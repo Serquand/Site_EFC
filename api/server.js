@@ -13,7 +13,6 @@ const sessions = {}
 
 const isTheGoodClient = (socket, idSession) => socket.rooms.has((sessions[idSession].game.game.turn() === 'w' ? 'firstPlayer - ' : 'secondPlayer - ') + idSession)
 
-
 io.on("connection", socket => {
     console.log("A new user is connected !")
 

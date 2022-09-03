@@ -24,6 +24,16 @@ export default class Game {
     }
 
     transformSquareInIndex(square) {
+        const rockSquare = []
+        if(square.includes('O-O')) {
+            if(square.includes('Kf1')) rockSquare.push(62)
+            else rockSquare.push(6)
+        } 
+        if(square.includes('O-O-O')) {
+            if(square.includes('Kd1')) rockSquare.push(58)
+            else rockSquare.push(2)
+        }
+
         for(let i = 0; i < square.length; i++) {
             square[i] = square[i].split("=")[0]
             const numberCase = square[i].charAt(square[i].length - 1)
@@ -31,7 +41,7 @@ export default class Game {
             letterCase = (letterCase.charCodeAt(0) - 97)
             square[i] = letterCase + (8 - numberCase) * 8
         }
-        return square
+        return square.concat(rockSquare)
     }
 
     movePiece(indexClick) {

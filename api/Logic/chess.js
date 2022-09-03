@@ -46,10 +46,7 @@ export default class Game {
         this.game.move({ from: this.transformIndexInSquare(this.selectedPiece), to: this.transformIndexInSquare(indexClick) })
         this.selectedPiece = null
         
-        return {
-            map: this.getMap(this.game.board()),
-            pgn: this.game.pgn()
-        }
+        return { map: this.getMap(this.game.board()), pgn: this.game.pgn() }
     }
 
     getPossibleMove(indexClick) {

@@ -150,8 +150,8 @@ export default {
             "wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"
         ]
         let socket = io("http://localhost:5000"), map = ref(payload), modalInit = ref(false), possibleMove = ref([-1]), 
-        modalPromotion = ref(false), promotionColor = ref('')
-        return { socket, map, modalInit, possibleMove, modalPromotion, promotionColor }
+        modalPromotion = ref(false), promotionColor = ref(''), pgn = ref([])
+        return { socket, map, modalInit, possibleMove, modalPromotion, promotionColor, pgn }
     }, 
 
     created() {
@@ -167,7 +167,8 @@ export default {
 
     methods: {        
         displayPgn(pgn) {
-            console.log(pgn);
+            let pgnTemp = pgn.split(".")
+            console.log(pgn, pgnTemp);
         },
 
         displayMove(chessboard, pgn) {

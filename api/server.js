@@ -9,6 +9,7 @@ import Game from './Logic/chess.js'
 import cors from 'cors'
 
 import setup from './Models/Setup.js'
+import Profil from './router/Profil.js'
 
 const app = express()
 const httpServer = http.createServer(app)
@@ -18,10 +19,11 @@ app.use(cors(process.env.URL_WEBSITE))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 
+app.use("/profil", Profil)
+
 const sessions = {}
 
 const isTheGoodClient = (socket, idSession) => socket.rooms.has((sessions[idSession].game.game.turn() === 'w' ? 'firstPlayer - ' : 'secondPlayer - ') + idSession)
-
 
 io.on("connection", socket => {
     console.log("A new user is connected !")

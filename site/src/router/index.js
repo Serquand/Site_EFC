@@ -9,7 +9,7 @@ import WatchGame from '../views/watchGame'
 import Profil from '../views/Profil'
 import BecomeMembre from "../views/BecomeMember"
 import MoreOnUs from '../views/MoreOnUs'
-import startGame from '../views/startGame'
+import Game from '../views/Game'
 import Tournament from '../views/Tournament'
 
 import { useAuthStore } from '../store/User'
@@ -36,9 +36,9 @@ const routes = [
         component: MoreOnUs
     },
     {
-        path: '/startGame',
+        path: '/game',
         name: 'Commencer une partie',
-        component: startGame
+        component: Game
     },    
     {
         path: '/profil/:userId', 

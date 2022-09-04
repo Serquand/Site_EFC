@@ -69,6 +69,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         border-color: white;
+        background-color: #f1f1f1;
         display: grid;
         grid-template: repeat(8, 70px) / repeat(8, 70px); 
         border: .5px solid black;

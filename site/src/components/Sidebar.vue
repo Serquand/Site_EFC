@@ -42,7 +42,7 @@
                             <li @click="choiceNav = ''">Envoyer un lien</li>
                         </router-link>
                         
-                        <router-link to="/startGame">
+                        <router-link to="/game">
                             <li @click="choiceNav = ''">Chercher un adversaire</li>
                         </router-link>
                         

@@ -1,17 +1,27 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
+const PORT = process.env.PORT || 6251
 
+import express from 'express'
 import * as http from "http"
-const server = http.createServer()
 import { Server } from "socket.io"
 import Game from './Logic/chess.js'
+import cors from 'cors'
 
-const io = new Server(server, { cors: { origins: [process.env.URL_WEBSITE] } })
-const PORT = process.env.PORT || 6251
+import setup from './Models/Setup.js'
+
+const app = express()
+const httpServer = http.createServer(app)
+const io = new Server(httpServer, { cors: { origins: [process.env.URL_WEBSITE] } })
+
+app.use(cors(process.env.URL_WEBSITE))
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }))
 
 const sessions = {}
 
 const isTheGoodClient = (socket, idSession) => socket.rooms.has((sessions[idSession].game.game.turn() === 'w' ? 'firstPlayer - ' : 'secondPlayer - ') + idSession)
+
 
 io.on("connection", socket => {
     console.log("A new user is connected !")
@@ -70,7 +80,8 @@ io.on("connection", socket => {
 })
 
 
-server.listen(PORT, () => {
+httpServer.listen(PORT, async () => {
+    await setup()
     console.clear()
     console.log("We are listening on PORT :", PORT)
 })

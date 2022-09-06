@@ -5,11 +5,13 @@ const PORT = process.env.PORT || 6251
 import express from 'express'
 import * as http from "http"
 import { Server } from "socket.io"
-import Game from './Logic/chess.js'
+import Game from './Logic/Game/chess.js'
 import cors from 'cors'
+import { v4 } from 'uuid'
 
 import setup from './Models/Setup.js'
 import Profil from './router/Profil.js'
+import auth from './Logic/Game/Auth'
 
 const app = express()
 const httpServer = http.createServer(app)
@@ -21,18 +23,23 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use("/profil", Profil)
 
-const sessions = {}
+let sessions = {}, tempIdGame = null;
 
 const isTheGoodClient = (socket, idSession) => socket.rooms.has((sessions[idSession].game.game.turn() === 'w' ? 'firstPlayer - ' : 'secondPlayer - ') + idSession)
 
 io.on("connection", socket => {
     console.log("A new user is connected !")
-
-    socket.on("responseUser", msg => {
-        if(!msg?.includes("-")) return
-        const user = msg.split("-")[1].trim()
-        msg = msg.split("-")[0].trim()
+    socket.on("responseUser", userInformation => {
+        if(!auth(userInformation)) return;
+        if(tempIdGame) {
+            msg = tempIdGame
+            tempIdGame = null     
+        } else {
+           tempIdGame = v4()
+           msg = tempIdGame
+        }
         socket.session = msg
+        const user = userInformation.user;
 
         if(!sessions[msg]) {
             sessions[msg] = [socket]

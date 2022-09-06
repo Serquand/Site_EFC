@@ -20,7 +20,7 @@ export const useAuthStore = defineStore({
                 body: JSON.stringify({ username: pseudo, email, pwd, mode }),
             };
             
-            let res = await fetch(url + "/login", requestOptions)
+            let res = await fetch(url + "/profil/login", requestOptions)
             if(res.status === 200 || res.status === 201) {
                 res = await res.json()
                 this.jwtToken = res.token 
@@ -35,7 +35,7 @@ export const useAuthStore = defineStore({
             let optionsSearch = {
                 headers: { 'Authorization': this.jwtToken }
             }
-            const isLoggedInResult = await fetch(url + '/checkAuth/' + this.username, optionsSearch)
+            const isLoggedInResult = await fetch(url + '/profil/checkAuth/' + this.username, optionsSearch)
             return isLoggedInResult.status == 200
         }, 
 

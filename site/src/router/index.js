@@ -60,7 +60,7 @@ const routes = [
         path: '/playProbleme', 
         name: 'Jouer un problème', 
         component: PlayProbleme,
-        meta: { requireAuth: true }
+        // meta: { requireAuth: true }
     },
     {
         path: '/api', 

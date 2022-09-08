@@ -11,6 +11,21 @@ export default sequelize.define("Game", {
         allowNull: false
     }, 
 
+    result: {
+        type: DataTypes.INTEGER, 
+        allowNull: false
+    }, 
+
+    eloPlayer1: {
+        type: DataTypes.INTEGER, 
+        allowNull: false
+    }, 
+
+    eloPlayer2: {
+        type: DataTypes.INTEGER, 
+        allowNull: false
+    },
+
     player1: {
         type: DataTypes.UUID, 
         references: {
@@ -30,6 +45,11 @@ export default sequelize.define("Game", {
     pgn: {
         type: DataTypes.TEXT,
         allowNull: false, 
+    }, 
+
+    dateGame: {
+        type: DataTypes.DATE, 
+        allowNull: false    
     }
 }, {
     timestamps: false,

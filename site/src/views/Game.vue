@@ -132,6 +132,7 @@
 <script>
 import { io } from 'socket.io-client'
 import { ref } from'vue'
+import { useAuthStore } from '../store/User'
 
 export default {
     setup() {
@@ -145,14 +146,20 @@ export default {
             "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP",
             "wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"
         ]
-        let socket = io("http://localhost:5000"), map = ref(payload), modalInit = ref(false), possibleMove = ref([-1]), 
-        modalPromotion = ref(false), promotionColor = ref(''), pgn = ref([])
-        return { socket, map, modalInit, possibleMove, modalPromotion, promotionColor, pgn }
+        let socket = io("http://localhost:5000"), 
+        map = ref(payload), 
+        modalInit = ref(false), 
+        possibleMove = ref([-1]), 
+        modalPromotion = ref(false), 
+        promotionColor = ref(''), 
+        pgn = ref([]), 
+        authStore = useAuthStore()
+        
+        return { socket, map, modalInit, possibleMove, modalPromotion, promotionColor, pgn, authStore }
     }, 
 
     created() {
-        const sessionId = prompt("Entrez l'ID de la session")
-        this.socket.emit("responseUser", sessionId)
+        this.socket.emit("responseUser", { user: this.authStore.username, token: this.authStore.jwtToken })
 
         this.socket.on("init", () => this.modalInit = true)
         this.socket.on('play', () => this.modalInit = false)
@@ -160,6 +167,7 @@ export default {
         this.socket.on("showMoveTab", possibleMove => this.displayPossibleMove(possibleMove))
         this.socket.on("promotion", promotion => this.displayPromotion(promotion))
         this.socket.on("cancel", () => this.possibleMove = [-1])
+        this.socket.on("beginningGameInfo", (elo, ennemiesElo, ennemy, color) => console.log(elo, ennemiesElo, ennemy, color))
     }, 
 
     methods: {        

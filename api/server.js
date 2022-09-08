@@ -24,6 +24,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use("/profil", Profil)
 
 let sessions = {}, tempIdGame = null;
+let availableId = new Array(0)
 
 const isTheGoodClient = (socket, idSession) => socket.rooms.has((sessions[idSession].game.game.turn() === 'w' ? 'firstPlayer - ' : 'secondPlayer - ') + idSession)
 
@@ -105,6 +106,16 @@ io.on("connection", socket => {
         socket.on("askDraw", () => console.log("Draw !"))
         socket.on("giveUp", () => console.log("giveUp !"))
         socket.on("confirmDraw", () => console.log("confirmDraw"))
+    })
+
+    socket.on("generateLink", () => {
+        console.log("generateLink")
+        const gameId = v4()
+        console.log(gameId);
+        availableId.push(gameId)
+        socket.emit("linkGenerated", gameId)
+        socket.join("Waiters - " + gameId)
+        socket.join("Waiters")
     })
 })
 

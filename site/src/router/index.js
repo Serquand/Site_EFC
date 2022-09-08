@@ -11,6 +11,8 @@ import BecomeMembre from "../views/BecomeMember"
 import MoreOnUs from '../views/MoreOnUs'
 import Game from '../views/Game'
 import Tournament from '../views/Tournament'
+import SendLink from '../views/SendLink'
+
 
 import { useAuthStore } from '../store/User'
 
@@ -54,6 +56,12 @@ const routes = [
         path: '/createProbleme', 
         name: 'Créer un problème', 
         component: CreatedProbleme,
+        // meta: { requireAuth: true }
+    },
+    {
+        path: '/sendLink/:idGame', 
+        name: 'Envoyer un lien',
+        component: SendLink, 
         // meta: { requireAuth: true }
     },
     {

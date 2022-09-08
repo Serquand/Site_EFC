@@ -38,7 +38,7 @@
                     v-if="choiceNav == 'Play'"
                     class="play-menu">
                     <ul>
-                        <router-link to="/sendLink">
+                        <router-link to="/sendLink/created">
                             <li @click="choiceNav = ''">Envoyer un lien</li>
                         </router-link>
                         

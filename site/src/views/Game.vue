@@ -133,6 +133,7 @@
 import { io } from 'socket.io-client'
 import { ref } from'vue'
 import { useAuthStore } from '../store/User'
+import router from '../router/index'
 
 export default {
     setup() {
@@ -159,7 +160,11 @@ export default {
     }, 
 
     created() {
-        this.socket.emit("responseUser", { user: this.authStore.username, token: this.authStore.jwtToken })
+        if(this.$route.params.idGame) {
+            this.socket.emit("answerSearching", this.$route.params.idGame)
+            this.socket.on("gameNotFound", () => router.push("/gameNotFound"))
+            this.socket.on("gameFound", () => this.socket.emit("responseUser", { user: this.authStore.username, token: this.authStore.jwtToken, game: this.$route.params.idGame}))
+        } else this.socket.emit("responseUser", { user: this.authStore.username, token: this.authStore.jwtToken })
 
         this.socket.on("init", () => this.modalInit = true)
         this.socket.on('play', () => this.modalInit = false)

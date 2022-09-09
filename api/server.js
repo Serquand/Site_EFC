@@ -12,6 +12,7 @@ import { v4 } from 'uuid'
 import setup from './Models/Setup.js'
 import Profil from './router/Profil.js'
 import auth from './Logic/Game/Auth.js'
+import { createParticularGame } from './Logic/WsFunctions.js'
 
 const app = express()
 const httpServer = http.createServer(app)
@@ -33,7 +34,8 @@ io.on("connection", socket => {
     socket.on("responseUser", async userInformation => {
         if(!auth(userInformation)) return;
         let msg;
-        if(tempIdGame) {
+        if(userInformation.game) msg = userInformation.game
+        else if(tempIdGame) {
             msg = tempIdGame
             tempIdGame = null     
         } else {
@@ -109,14 +111,13 @@ io.on("connection", socket => {
     })
 
     socket.on("generateLink", () => {
-        console.log("generateLink")
         const gameId = v4()
-        console.log(gameId);
-        availableId.push(gameId)
+        availableId.push({ id: gameId, count: 0 })
         socket.emit("linkGenerated", gameId)
         socket.join("Waiters - " + gameId)
-        socket.join("Waiters")
     })
+
+    socket.on("answerSearching", link => availableId = createParticularGame(availableId, socket, io, link))
 })
 
 

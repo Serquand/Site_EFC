@@ -17,10 +17,7 @@ export default {
 
     created() {
         this.socket.emit("generateLink")
-        this.socket.on("linkGenerated", idGame => {
-            console.log(idGame)
-            this.linkSent = idGame
-        })
+        this.socket.on("linkGenerated", idGame => this.linkSent = idGame)
         this.socket.on("userJoined", () => router.push('/game/' + this.linkSent))
     }
 }

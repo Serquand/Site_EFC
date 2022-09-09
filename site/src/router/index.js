@@ -38,7 +38,7 @@ const routes = [
         component: MoreOnUs
     },
     {
-        path: '/game',
+        path: '/game/:idGame?',
         name: 'Commencer une partie',
         component: Game
     },    

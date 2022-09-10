@@ -11,6 +11,9 @@ export default class Game {
         this.modifyEloSecond = null
         this.modifyEloFirst = null
 
+        this.viewerChat = new Array(0)
+        this.playerChat = new Array(0)
+
         this.game = new Chess()
         this.gameMode = gameMode
         this.idGame = idGame
@@ -162,8 +165,6 @@ export default class Game {
         firstPlayerMax = firstPlayerMax.dataValues.MaxElo
         secondPlayerMax = secondPlayerMax.dataValues.MaxElo
 
-        console.log(firstPlayerMax, secondPlayerMax)
-
         if(firstPlayerMax < newEloFirst) await Player.update({ maxElo: newEloFirst }, {
             where: { Pseudo: this.firstPlayer }
         })
@@ -177,10 +178,7 @@ export default class Game {
             attributes: ['id'], 
             where: { Pseudo: pseudo }
         })
-        console.log(idPseudo)
-        idPseudo = idPseudo.dataValues.id
-        console.log(idPseudo)
-        return idPseudo
+        return idPseudo.dataValues.id 
     }
 
     gameDate() {
@@ -188,7 +186,11 @@ export default class Game {
         const month = dateGame.getMonth() < 10 ? "0" + dateGame.getMonth() : dateGame.getMonth()
         const year = dateGame.getFullYear() < 10 ? "0" + dateGame.getFullYear() : dateGame.getFullYear()
         const date = dateGame.getDate() < 10 ? "0" + dateGame.getDate() : dateGame.getDate()
-        return date + "-" + month + "-" + year
+        const hours = dateGame.getHours() < 10 ? '0' + dateGame.getHours() : dateGame.getHours()
+        const minutes = dateGame.getMinutes() < 10 ? '0' + dateGame.getMinutes() : dateGame.getMinutes()
+        const seconds = dateGame.getSeconds() < 10 ? '0' + dateGame.getSeconds() : dateGame.getSeconds()
+        console.log(date + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds)
+        return date + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds
     }
 
     async addGameInDb() {

@@ -22,13 +22,26 @@
                 {{ (index + 1) + ". " + move.split(" ")[0] + " | " +  (move.split(" ")[1] == undefined ? '' : move.split(" ")[1]) }}
             </li>
         </ul>
+        <Chat @message="sendMessage" />
         
         <div 
             class="modal modal-init"
             v-if="modalInit"
         >
             <div class="modal-content">
-                <p>Nous sommes en recherche de joueurs !</p>
+                <h4>Recherche de joueurs</h4>
+                <div class="anim-waiting-container">
+                    <div style="background-image: url('/assets/chess/bP.png');" class="piece bP"></div>
+                    <div style="background-image: url('/assets/chess/bN.png');" class="piece bN"></div>
+                    <div style="background-image: url('/assets/chess/bB.png');" class="piece bB"></div>
+                    <div style="background-image: url('/assets/chess/bR.png');" class="piece bR"></div>
+                    <div style="background-image: url('/assets/chess/bQ.png');" class="piece bQ"></div>
+                    <div style="background-image: url('/assets/chess/bK.png');" class="piece bK"></div>
+                </div>
+                <button
+                    class="cancel-button"
+                    @click="cancelSearching"
+                >Annuler la recherche</button>
             </div>
         </div>
 
@@ -98,13 +111,31 @@
     }
 
     .modal-content {
-        width: 500px;
-        height: 200px;
+        padding: 45px;
         border-radius: 20px;
         background-color: #fff;
         display: flex;
+        flex-direction: column;
+        gap: 55px;
         align-items: center;
         justify-content: center;
+    }
+
+    .modal-content h4 {
+        color: #333;
+        position: relative;
+    }
+
+    .modal-content h4::after {
+        position: absolute;
+        content: '';
+        display: block;
+        width: 0px;
+        left: 100%;
+        transform: translate(0%);
+        height: 2px;
+        background-color: black;
+        animation: underliningApparition 4s ease infinite alternate;
     }
 
     .promotion-content {
@@ -127,6 +158,257 @@
         border: .1px solid #333A;
         border-radius: 100%;
     }
+
+    .anim-waiting-container {
+        display: flex;
+    }
+
+    .anim-waiting-container div {
+        height: 70px;
+        width: 70px;
+    }
+
+    .anim-waiting-container :first-child {
+        animation: pawnApparition 5s linear 0s infinite forwards;
+    }
+
+    .anim-waiting-container :nth-child(2) {
+        animation: knightApparition 5s linear 0s infinite forwards;
+    }
+
+    .anim-waiting-container :nth-child(3) {
+        animation: bishopApparition 5s linear 0s infinite forwards;
+    }
+
+    .anim-waiting-container :nth-child(4) {
+        animation: rookApparition 5s linear 0s infinite forwards;
+    }
+
+    .anim-waiting-container :nth-child(5) {
+        animation: queenApparition 5s linear 0s infinite forwards;
+    }
+
+    .anim-waiting-container :last-child {
+        animation: kingApparition 5s linear 0s infinite forwards;
+    }
+
+    .cancel-button {
+        background-color: #FFFFFF;
+        border: 1px solid #222222;
+        border-radius: 8px;
+        box-sizing: border-box;
+        color: #222222;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px;
+        margin: 0;
+        padding: 13px 23px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        width: auto;
+        transition: background-color .8s ease;
+    }
+
+    .cancel-button:hover {
+        background-color: whitesmoke;
+    }
+
+    @keyframes underliningApparition {
+        from {
+            left: 0;
+            width: 0%;
+        }
+
+        22% {
+            width: 50%;
+        }
+    }
+
+    @keyframes pawnApparition {
+        0% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+        
+        14.28% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        50% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        64.28% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes knightApparition {
+        0% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+        
+        7.14% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        21.42% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        57.14% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        71.42% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes bishopApparition {
+        0% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+        
+        14.28% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        28.56% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        64.28% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        78.56% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes rookApparition {
+        0% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+        
+        21.42% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        35.70% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        71.42% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        85.70% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+    }
+
+    @keyframes queenApparition {
+        0% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+        
+        28.56% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        42.84% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        78.56% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        92.84% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes kingApparition {
+        0% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+        
+        35.70% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        50% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        85.70% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+    }
 </style>
 
 <script>
@@ -134,6 +416,7 @@ import { io } from 'socket.io-client'
 import { ref } from'vue'
 import { useAuthStore } from '../store/User'
 import router from '../router/index'
+import Chat from '../components/Game/Chat.vue'
 
 export default {
     setup() {
@@ -175,6 +458,15 @@ export default {
         this.socket.on("beginningGameInfo", (elo, ennemiesElo, ennemy, color) => console.log(elo, ennemiesElo, ennemy, color))
     }, 
 
+    components: {
+        Chat
+    },
+
+    beforeUnmount() {
+        console.log("Tse")
+        this.socket.close()
+    },
+
     methods: {        
         displayPgn(pgn) {
             let pgnTemp = pgn.split(".")
@@ -208,10 +500,20 @@ export default {
             console.log(promotion)
         }, 
 
+        cancelSearching() {
+            this.socket.close()
+            router.go(-1)
+        },
+
         sendPromotion(piece) {
             this.socket.emit("promotionChoice", piece)
             this.modalPromotion = false 
             this.promotionColor = ''
+        }, 
+
+        sendMessage(message) {
+            console.log(message)
+            this.socket.emit("message", message)
         }
     }
 }    

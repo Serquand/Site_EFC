@@ -12,7 +12,8 @@ import { v4 } from 'uuid'
 import setup from './Models/Setup.js'
 import Profil from './router/Profil.js'
 import auth from './Logic/Game/Auth.js'
-import { createParticularGame } from './Logic/WsFunctions.js'
+import { createParticularGame, handleChat, isTheGoodClient } from './Logic/Game/WsFunctions.js'
+import { watch } from 'fs'
 
 const app = express()
 const httpServer = http.createServer(app)
@@ -26,8 +27,6 @@ app.use("/profil", Profil)
 
 let sessions = {}, tempIdGame = null;
 let availableId = new Array(0)
-
-const isTheGoodClient = (socket, idSession) => socket.rooms.has((sessions[idSession].game.game.turn() === 'w' ? 'firstPlayer - ' : 'secondPlayer - ') + idSession)
 
 io.on("connection", socket => {
     console.log("A new user is connected !")
@@ -74,7 +73,7 @@ io.on("connection", socket => {
         }
 
         socket.on("newInfoClick", async indexClick => {
-            if(isTheGoodClient(socket, msg)) {
+            if(isTheGoodClient(sessions, socket, msg)) {
                 if(sessions[msg].game.selectedPiece) {
                     const infoMove = sessions[msg].game.movePiece(indexClick)
                     if(typeof(infoMove) === 'object') io.to(["players - " + msg, "Watchers " + msg]).emit("moveTo", infoMove.map, infoMove.pgn)
@@ -96,18 +95,22 @@ io.on("connection", socket => {
         })
 
         socket.on("promotionChoice", choice => {
-            if(!isTheGoodClient(socket, msg)) return
+            if(!isTheGoodClient(sessions, socket, msg)) return
             const infoMove = sessions[msg].game.createPromotion(choice)
             io.to(["players - " + msg, "Watchers " + msg]).emit("moveTo", infoMove.map, infoMove.pgn)
             if(sessions[msg].game.game.in_checkmate()) console.log("Il y a échec et mat !")
             else if(sessions[msg].game.game.in_draw()) console.log("Il y a match nul !")
         })
 
-        socket.on("chatPlayer", () => console.log('chatPlayer'))
-        socket.on("chatViewer", () => console.log("chatViewer"))
+        socket.on("message", message => handleChat(io, sessions, socket, msg, message))
         socket.on("askDraw", () => console.log("Draw !"))
         socket.on("giveUp", () => console.log("giveUp !"))
         socket.on("confirmDraw", () => console.log("confirmDraw"))
+
+        socket.on("disconnect", () => {
+            console.log("We will disconnect !")
+            console.log(sessions, msg)
+        })
     })
 
     socket.on("generateLink", () => {
@@ -118,6 +121,25 @@ io.on("connection", socket => {
     })
 
     socket.on("answerSearching", link => availableId = createParticularGame(availableId, socket, io, link))
+
+    socket.on("watchAllGames", () => {
+        socket.join("AllWatchers")
+        const allFullGames = Object.keys(sessions)
+        let gameParse = new Array(0)
+        for(let i = 0; i < allFullGames.length; i++) {
+            console.log(allFullGames[i])
+            if(sessions[allFullGames[i]].game.secondPlayer == null) continue;
+            gameParse.push({
+                board: sessions[allFullGames[i]].game.game.board(), 
+                firstPlayer: sessions[allFullGames[i]].game.firstPlayer, 
+                eloFirstPlayer: sessions[allFullGames[i]].game.eloFirstPlayer, 
+                secondPlayer: sessions[allFullGames[i]].game.secondPlayer,
+                eloSecondPlayer: sessions[allFullGames[i]].game.eloSecondPlayer,
+            })
+        }
+        console.log(gameParse)
+        socket.emit("answerAllGames", gameParse)
+    })
 })
 
 

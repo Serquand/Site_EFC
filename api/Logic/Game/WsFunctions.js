@@ -15,3 +15,11 @@ export const createParticularGame = (availableId, socket, io, link) => {
     } else socket.emit("gameNotFound")
     return availableId
 }
+
+export const handleChat = (io, sessions, socket, idSessions, message) => {
+    console.log(io, sessions, socket, idSessions, message)
+}
+
+export const isTheGoodClient = (sessions, socket, idSession) => 
+    socket.rooms.has((sessions[idSession].game.game.turn() === 'w' ? 'firstPlayer - ' : 'secondPlayer - ') + idSession)
+

@@ -49,6 +49,7 @@ export default sequelize.define("Game", {
 
     dateGame: {
         type: DataTypes.DATE, 
+        defaultValue: DataTypes.NOW,
         allowNull: false    
     }
 }, {

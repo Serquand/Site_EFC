@@ -25,7 +25,10 @@ const signIn = async (req, res, next) => {
     const valid = compare(user.password, responseDb.Password)
 
     if(count == 0 || !valid) return res.status(401).send({ error: "Pseudo ou mot de passe incorrect" })
-    return res.status(200).json({ userId: user.pseudo, token: jwt.sign({ userId: user.pseudo }, process.env.SALT_JWT, { expiresIn: '24h' }) })
+    return res.status(200).json({ userId: user.pseudo, token: sign(
+        { "userId": user.pseudo }, 
+        "" + process.env.SALT_JWT) 
+    })
 }
 
 const signUp = async (req, res, next) => {
@@ -41,7 +44,7 @@ const signUp = async (req, res, next) => {
 
     const myHashPwd = await hash(password, 10)
     await Players.create({ Pseudo: username, Email: email, Password: myHashPwd })
-    return res.status(201).json({ user: username, token: sign({ userId: username }, process.env.SALT_JWT, { expiresIn: '24h' }) })
+    return res.status(201).json({ user: username, token: sign({ "userId": username }, "" + process.env.SALT_JWT, { expiresIn: '24h' }) })
 }
 
 const reset = (req, res, next) => {

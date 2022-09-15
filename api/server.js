@@ -29,7 +29,9 @@ let availableId = new Array(0)
 io.on("connection", socket => {
     console.log("A new user is connected !")
     socket.on("responseUser", async userInformation => {
-        if(!auth(userInformation)) return;
+        const authentification = auth(userInformation)
+        console.log(authentification);
+        if(!authentification) return;
         let msg;
         if(userInformation.game) msg = userInformation.game
         else if(tempIdGame) {
@@ -127,6 +129,7 @@ io.on("connection", socket => {
         for(let i = 0; i < allFullGames.length; i++) {
             if(sessions[allFullGames[i]].game.secondPlayer == null) continue;
             gameParse.push({
+                idGame: allFullGames[i],
                 board: sessions[allFullGames[i]].game.game.board(), 
                 firstPlayer: sessions[allFullGames[i]].game.firstPlayer, 
                 eloFirstPlayer: sessions[allFullGames[i]].game.eloFirstPlayer, 
@@ -134,7 +137,6 @@ io.on("connection", socket => {
                 eloSecondPlayer: sessions[allFullGames[i]].game.eloSecondPlayer,
             })
         }
-        console.log(gameParse)
         socket.emit("answerAllGames", gameParse)
     })
 })

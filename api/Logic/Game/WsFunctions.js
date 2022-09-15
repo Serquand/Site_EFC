@@ -3,18 +3,12 @@ const { sign, verify } = jwt;
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-export const isAuthentificated = (information) => {
-    const authToken = information.user, authUser = information.token
+export const isAuthentificated = information => {
+    if(!information) return false
     try {
-        const token = authToken.split(" ")[1]
-        const decodedToken = verify(token, process.env.SALT_JWT)
-        const userId = decodedToken.userId
-        const logged = !!(authUser && authUser == userId)
-        if(logged) return true
-        return false
-    } catch {
-        return false
-    }
+        const logged = !!(information?.user == verify(information.token, process.env.SALT_JWT).userId)
+        return logged
+    } catch { return false }
 }
 
 const inWaitingArray = (availableId, link) => {

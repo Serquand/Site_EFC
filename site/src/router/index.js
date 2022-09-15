@@ -81,8 +81,13 @@ const routes = [
     },
     {
         path: '/watchGame', 
-        name: 'Regarder une partie', 
+        name: 'Regarder les parties', 
         component: WatchGame
+    }, 
+    {
+        path: '/watch/:idGame',
+        name: 'Regarder une partie', 
+        component: Game
     }
 ]
 

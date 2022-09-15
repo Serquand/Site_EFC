@@ -2,7 +2,7 @@ import * as dotenv  from 'dotenv'
 dotenv.config()
 import Players from '../../../Models/Players.js';
 import jwt from 'jsonwebtoken';
-const { sign } = jwt;
+const { sign, verify } = jwt;
 import { hash, compare } from 'bcrypt';
 
 export default function login(req, res, next) {
@@ -25,10 +25,8 @@ const signIn = async (req, res, next) => {
     const valid = compare(user.password, responseDb.Password)
 
     if(count == 0 || !valid) return res.status(401).send({ error: "Pseudo ou mot de passe incorrect" })
-    return res.status(200).json({ userId: user.pseudo, token: sign(
-        { "userId": user.pseudo }, 
-        "" + process.env.SALT_JWT) 
-    })
+    const token = sign({ userId: user.pseudo }, process.env.SALT_JWT, { expiresIn: '24h' })
+    return res.status(200).json({ userId: user.pseudo, token })
 }
 
 const signUp = async (req, res, next) => {
@@ -44,7 +42,8 @@ const signUp = async (req, res, next) => {
 
     const myHashPwd = await hash(password, 10)
     await Players.create({ Pseudo: username, Email: email, Password: myHashPwd })
-    return res.status(201).json({ user: username, token: sign({ "userId": username }, "" + process.env.SALT_JWT, { expiresIn: '24h' }) })
+    const token = sign({ userId: username }, process.env.SALT_JWT)
+    return res.status(201).json({ user: username, token })
 }
 
 const reset = (req, res, next) => {

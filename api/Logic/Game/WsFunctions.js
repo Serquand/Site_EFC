@@ -1,3 +1,22 @@
+import jwt from 'jsonwebtoken';
+const { sign, verify } = jwt;
+import * as dotenv from 'dotenv'
+dotenv.config()
+
+export const isAuthentificated = (information) => {
+    const authToken = information.user, authUser = information.token
+    try {
+        const token = authToken.split(" ")[1]
+        const decodedToken = verify(token, process.env.SALT_JWT)
+        const userId = decodedToken.userId
+        const logged = !!(authUser && authUser == userId)
+        if(logged) return true
+        return false
+    } catch {
+        return false
+    }
+}
+
 const inWaitingArray = (availableId, link) => {
     for(let i = 0; i < availableId.length; i++) {
         if(availableId[i].id == link) return i;

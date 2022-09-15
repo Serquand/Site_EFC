@@ -1,17 +1,14 @@
-import * as jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
+const { sign, verify } = jwt;
 import * as dotenv from 'dotenv'
 dotenv.config()
 
 const auth = (req, res, next) => {
+    console.log(req.headers.authorization);
     let user = req.params.user
-    console.log(jwt)
-    console.log(process.env.SALT_JWT)
     try {
         const token = req.headers.authorization.split(" ")[1]
-        console.log(token, process.env.SALT_JWT, user);
-        console.log(process.env.SALT_JWT)
-        const decodedToken = jwt.verify(token, process.env.SALT_JWT)
-        console.log(decodedToken);
+        const decodedToken = verify(token, process.env.SALT_JWT)
         const userId = decodedToken.userId
         let logged = !!(user && user == userId)
         if(logged) next()

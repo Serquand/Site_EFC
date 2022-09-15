@@ -11,9 +11,7 @@ import { v4 } from 'uuid'
 
 import setup from './Models/Setup.js'
 import Profil from './router/Profil.js'
-import auth from './Logic/Game/Auth.js'
-import { createParticularGame, handleChat, isTheGoodClient } from './Logic/Game/WsFunctions.js'
-import { watch } from 'fs'
+import { createParticularGame, handleChat, isTheGoodClient, isAuthentificated as auth } from './Logic/Game/WsFunctions.js'
 
 const app = express()
 const httpServer = http.createServer(app)
@@ -127,7 +125,6 @@ io.on("connection", socket => {
         const allFullGames = Object.keys(sessions)
         let gameParse = new Array(0)
         for(let i = 0; i < allFullGames.length; i++) {
-            console.log(allFullGames[i])
             if(sessions[allFullGames[i]].game.secondPlayer == null) continue;
             gameParse.push({
                 board: sessions[allFullGames[i]].game.game.board(), 

@@ -26,17 +26,20 @@ export const useAuthStore = defineStore({
                 this.jwtToken = res.token 
                 this.username = res.userId
                 this.email = res.email
-                router.push("/")
+                if(router.currentRoute.value.query.redirect) router.push(router.currentRoute.value.query.redirect)
             }
         }, 
 
         async isLoggedIn() {
+            console.log(this.jwtToken);
             if(this.username == '' || this.jwtToken == '') return false
-            let optionsSearch = {
-                headers: { 'Authorization': this.jwtToken }
+            const optionsSearch = { 
+                headers: { 'Authorization': 'Bearer ' + this.jwtToken } 
             }
-            const isLoggedInResult = await fetch(url + '/profil/checkAuth/' + this.username, optionsSearch)
-            return isLoggedInResult.status == 200
+            const isLoggedInResult = await fetch(url + '/profil/auth/' + this.username, optionsSearch)
+            if(isLoggedInResult.status == 200) return true
+            this.logout()
+            return false
         }, 
 
         logout() {

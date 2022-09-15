@@ -7,6 +7,6 @@ import getProfil from '../Logic/Middleware/Profil/GetProfil.js'
 
 router.post("/login", login)
 router.get("/profil/:user", /* auth, */ getProfil)
-router.post("/auth/:user", auth)
+router.get("/auth/:user", auth, (req, res) => res.status(200).json({ information: 'User connected !' }))
 
 export default router

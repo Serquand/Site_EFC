@@ -4,7 +4,6 @@ import Login from '../views/Login'
 import NotFound from '../views/NotFound'
 import CreatedProbleme from '../views/CreatedProbleme'
 import PlayProbleme from '../views/PlayProbleme'
-import API from '../views/API'
 import WatchGame from '../views/watchGame'
 import Profil from '../views/Profil'
 import BecomeMembre from "../views/BecomeMember"
@@ -25,12 +24,14 @@ const routes = [
     {
         path: '/tournament',
         name: 'Tournoi',
-        component: Tournament
+        component: Tournament, 
+        meta: { requireAuth: true }
+
     },
     {
         path: '/becomeMember',
         name: 'Devenir membre',
-        component: BecomeMembre
+        component: BecomeMembre, 
     },
     {
         path: '/moreOnUs',
@@ -40,12 +41,15 @@ const routes = [
     {
         path: '/game/:idGame?',
         name: 'Commencer une partie',
-        component: Game
+        component: Game,
+        meta: { requireAuth: true }
+
     },    
     {
         path: '/profil/:userId', 
         name: 'Profil', 
-        component: Profil
+        component: Profil,
+        meta: { requireAuth: true }
     },
     {
         path: '/login', 
@@ -56,24 +60,19 @@ const routes = [
         path: '/createProbleme', 
         name: 'Créer un problème', 
         component: CreatedProbleme,
-        // meta: { requireAuth: true }
+        meta: { requireAuth: true }
     },
     {
         path: '/sendLink/:idGame', 
         name: 'Envoyer un lien',
         component: SendLink, 
-        // meta: { requireAuth: true }
+        meta: { requireAuth: true }
     },
     {
         path: '/playProbleme', 
         name: 'Jouer un problème', 
         component: PlayProbleme,
-        // meta: { requireAuth: true }
-    },
-    {
-        path: '/api', 
-        name: 'API - Docs', 
-        component: API, 
+        meta: { requireAuth: true }
     },
     {
         path: '/:pathMatching(.*)*', 
@@ -94,7 +93,10 @@ const router = createRouter({
 
 router.beforeEach(async to => {
     const auth = useAuthStore()
-    if(to.meta?.requireAuth && !(await auth.isLoggedIn())) return { path: '/login' }
+    if(to.meta?.requireAuth && !(await auth.isLoggedIn())) return { 
+        path: '/login', 
+        query: { redirect: to.fullPath } 
+    }
 })
 
 export default router

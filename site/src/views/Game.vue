@@ -443,7 +443,8 @@ export default {
     }, 
 
     created() {
-        if(this.$route.fullPath.startsWith("/watch")) this.socket.emit("responseUser", { user: this.authStore.username, token: this.authStore.jwtToken, game: this.$route.params.idGame})
+        if(this.$route.fullPath.startsWith("/watch")) 
+            this.socket.emit("responseUser", { user: this.authStore.username, token: this.authStore.jwtToken, game: this.$route.params.idGame})
         else if(this.$route.params.idGame) {
             this.socket.emit("answerSearching", this.$route.params.idGame)
             this.socket.on("gameNotFound", () => router.push("/gameNotFound"))

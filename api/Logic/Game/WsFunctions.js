@@ -33,15 +33,14 @@ export const handleChat = (io, sessions, socket, idSessions, message) => {
     if(!isAuthentificated(message.informationUser) || !message.message?.trim()) return
     const actualSession = sessions[idSessions]
     if(socket.rooms.has('players - ' + idSessions)) {
-        console.log("Test");
         actualSession.game.playerChat.push({
-            user: 'Serkan', 
+            user: message.informationUser.user, 
             message: message.message
         })
         io.to('players - ' + idSessions).emit("NewChat", actualSession.game.playerChat)
     } else {
         actualSession.game.viewerChat.push({
-            user: 'Serkan', 
+            user: message.informationUser.user, 
             message: message.message
         })
         io.to('Watchers ' + idSessions).emit("NewChat", actualSession.game.viewerChat)

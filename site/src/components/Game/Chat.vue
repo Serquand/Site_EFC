@@ -109,6 +109,8 @@ li:not(:first-child) {
 }
 
 .input-container {
+    background-color: #fff;
+    height: 50px;
     width: 100%;
     display: flex;
     flex-direction: column;

@@ -30,8 +30,23 @@ export const createParticularGame = (availableId, socket, io, link) => {
 }
 
 export const handleChat = (io, sessions, socket, idSessions, message) => {
-    console.log(io, sessions, socket, idSessions, message)
-}
+    if(!isAuthentificated(message.informationUser)) return
+    const actualSession = sessions[idSessions]
+    if(socket.rooms.has('players - ' + idSessions)) {
+        console.log("Test");
+        actualSession.game.playerChat.push({
+            user: 'Serkan', 
+            message: message.message
+        })
+        io.to('players - ' + idSessions).emit("NewChat", actualSession.game.playerChat)
+    } else {
+        actualSession.game.viewerChat.push({
+            user: 'Serkan', 
+            message: message.message
+        })
+        io.to('Watchers ' + idSessions).emit("NewChat", actualSession.game.viewerChat)
+    }
+} 
 
 export const isTheGoodClient = (sessions, socket, idSession) => 
     socket.rooms.has((sessions[idSession].game.game.turn() === 'w' ? 'firstPlayer - ' : 'secondPlayer - ') + idSession)

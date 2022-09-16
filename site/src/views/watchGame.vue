@@ -17,9 +17,7 @@ export default {
         return { socket, allGames }
     }, 
 
-    components: {
-        LittleGame
-    },
+    components: { LittleGame },
 
     created() {
         this.socket.emit("watchAllGames")

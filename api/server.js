@@ -32,6 +32,7 @@ io.on("connection", socket => {
         //We need to check if it's not a watcher and we will check if userInformation.game if ok and belongs a game which has already 2 players  
         if(!auth(userInformation) && (!userInformation.game && !sessions[userInformation.game] && !sessions[userInformation.game]?.game.secondPlayer)) 
             return;
+            
         let msg;
         if(userInformation.game) msg = userInformation.game
         else if(tempIdGame) {

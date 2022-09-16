@@ -1,5 +1,10 @@
 <template>
     <div class="app-main-container">
+        <Chat 
+            @message="sendMessage"
+            :chat="chat"
+            :key="nbChat"
+        />
         <div class="chessboard-main-container">
             <div
                 :key="index"
@@ -22,7 +27,6 @@
                 {{ (index + 1) + ". " + move.split(" ")[0] + " | " +  (move.split(" ")[1] == undefined ? '' : move.split(" ")[1]) }}
             </li>
         </ul>
-        <Chat @message="sendMessage" />
         
         <div 
             class="modal modal-init"
@@ -76,11 +80,15 @@
 </template>
 
 <style>
-    .chessboard-main-container {
+    .app-main-container {
         position: absolute;
         top: 50%;
         left: 50%;
+        display: flex;
         transform: translate(-50%, -50%);
+    }
+
+    .chessboard-main-container {
         border-color: white;
         background-color: #f1f1f1;
         display: grid;
@@ -430,16 +438,10 @@ export default {
             "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP",
             "wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"
         ]
-        let socket = io("http://localhost:5000"), 
-        map = ref(payload), 
-        modalInit = ref(false), 
-        possibleMove = ref([-1]), 
-        modalPromotion = ref(false), 
-        promotionColor = ref(''), 
-        pgn = ref([]), 
-        authStore = useAuthStore()
-        
-        return { socket, map, modalInit, possibleMove, modalPromotion, promotionColor, pgn, authStore }
+        let socket = io("http://localhost:5000"), map = ref(payload), modalInit = ref(false), possibleMove = ref([-1]), 
+        modalPromotion = ref(false), promotionColor = ref(''), pgn = ref([]), chat = ref([]), authStore = useAuthStore(),
+        nbChat = ref(0)
+        return { nbChat, socket, map, modalInit, possibleMove, modalPromotion, promotionColor, pgn, authStore, chat }
     }, 
 
     created() {
@@ -457,6 +459,7 @@ export default {
         this.socket.on("showMoveTab", possibleMove => this.displayPossibleMove(possibleMove))
         this.socket.on("promotion", promotion => this.displayPromotion(promotion))
         this.socket.on("cancel", () => this.possibleMove = [-1])
+        this.socket.on("NewChat", mess => this.handleNewMessage(mess))
         this.socket.on("beginningGameInfo", (elo, ennemiesElo, ennemy, color) => console.log(elo, ennemiesElo, ennemy, color))
     }, 
 
@@ -465,7 +468,6 @@ export default {
     },
 
     beforeUnmount() {
-        console.log("Tse")
         this.socket.close()
     },
 
@@ -479,6 +481,11 @@ export default {
                 pgnTemp[i] = pgnTemp[i].trim()
             }
             this.pgn = pgnTemp
+        },
+
+        handleNewMessage(mess) {
+            this.chat = mess
+            this.nbChat++;
         },
 
         displayMove(chessboard, pgn) {
@@ -514,7 +521,6 @@ export default {
         }, 
 
         sendMessage(message) {
-            console.log(message)
             this.socket.emit("message", message)
         }
     }

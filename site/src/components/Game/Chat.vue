@@ -53,6 +53,7 @@ export default {
                     token: auth.jwtToken 
                 }
             })
+            this.typedMessage = ''
         }, 
 
         resizeTextarea() {

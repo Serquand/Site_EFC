@@ -5,7 +5,7 @@
             :chat="chat"
             :key="nbChat"
         />
-        <div class="chessboard-main-container">
+        <div :class="['chessboard-main-container', color == 'b' ? 'rotate' : '']">
             <div
                 :key="index"
                 v-for="(n, index) in 64"
@@ -94,6 +94,14 @@
         border: .5px solid black;
         width: fit-content;
     }
+
+    .chessboard-main-container.rotate {
+        transform: rotate(180deg);
+    }
+
+    .chessboard-main-container.rotate div {
+        transform: rotate(180deg);
+    } 
 
     .chessboard-main-container div, .promotion-content div {
         background-position: center;
@@ -439,9 +447,9 @@ export default {
         ]
         let socket = io("http://localhost:5000"), map = ref(payload), modalInit = ref(false), possibleMove = ref([-1]), 
         modalPromotion = ref(false), promotionColor = ref(''), pgn = ref([]), chat = ref([]), authStore = useAuthStore(),
-        nbChat = ref(0), numberOfViewers = ref(0), updateRight = ref(0)
+        nbChat = ref(0), numberOfViewers = ref(0), updateRight = ref(0), color = ref("w")
         
-        return { nbChat, socket, map, modalInit, possibleMove, modalPromotion, promotionColor, pgn, authStore, chat, numberOfViewers, updateRight }
+        return { nbChat, socket, map, modalInit, possibleMove, modalPromotion, promotionColor, pgn, authStore, chat, numberOfViewers, updateRight, color }
     }, 
 
     created() {
@@ -460,7 +468,7 @@ export default {
         this.socket.on("promotion", promotion => this.displayPromotion(promotion))
         this.socket.on("cancel", () => this.possibleMove = [-1])
         this.socket.on("NewChat", mess => this.handleNewMessage(mess))
-        this.socket.on("beginningGameInfo", (elo, ennemiesElo, ennemy, color) => console.log(elo, ennemiesElo, ennemy, color))
+        this.socket.on("beginningGameInfo", (elo, ennemiesElo, ennemy, color) => this.setBegginningGame(elo, ennemiesElo, ennemy, color))
         this.socket.on("newViewer", nbViewers => this.newViewers(nbViewers))
     }, 
 
@@ -474,6 +482,11 @@ export default {
     },
 
     methods: {       
+        setBegginningGame(elo, ennemiesElo, ennemy, color) {
+            console.log(elo, ennemiesElo, ennemy, color)
+            this.color = color
+        },
+
         newViewers(nbViewers) {
             this.numberOfViewers = nbViewers
             this.updateRight++

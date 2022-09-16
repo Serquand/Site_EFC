@@ -30,7 +30,7 @@ export const createParticularGame = (availableId, socket, io, link) => {
 }
 
 export const handleChat = (io, sessions, socket, idSessions, message) => {
-    if(!isAuthentificated(message.informationUser)) return
+    if(!isAuthentificated(message.informationUser) || !message.message?.trim()) return
     const actualSession = sessions[idSessions]
     if(socket.rooms.has('players - ' + idSessions)) {
         console.log("Test");

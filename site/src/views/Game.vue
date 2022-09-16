@@ -22,6 +22,8 @@
         <RightPanel 
             @giveUp="sendGiveUp"
             @drawProposal="sendDrawProposal"
+            :numberOfViewers="numberOfViewers"
+            :key="numberOfViewers"
         />
         
         <div 
@@ -437,8 +439,8 @@ export default {
         ]
         let socket = io("http://localhost:5000"), map = ref(payload), modalInit = ref(false), possibleMove = ref([-1]), 
         modalPromotion = ref(false), promotionColor = ref(''), pgn = ref([]), chat = ref([]), authStore = useAuthStore(),
-        nbChat = ref(0)
-        return { nbChat, socket, map, modalInit, possibleMove, modalPromotion, promotionColor, pgn, authStore, chat }
+        nbChat = ref(0), numberOfViewers = ref(0)
+        return { nbChat, socket, map, modalInit, possibleMove, modalPromotion, promotionColor, pgn, authStore, chat, numberOfViewers }
     }, 
 
     created() {
@@ -458,6 +460,7 @@ export default {
         this.socket.on("cancel", () => this.possibleMove = [-1])
         this.socket.on("NewChat", mess => this.handleNewMessage(mess))
         this.socket.on("beginningGameInfo", (elo, ennemiesElo, ennemy, color) => console.log(elo, ennemiesElo, ennemy, color))
+        this.socket.on("newViewer", nbViewers => this.numberOfViewers = nbViewers)
     }, 
 
     components: {

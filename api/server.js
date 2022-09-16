@@ -69,6 +69,7 @@ io.on("connection", socket => {
             } else {
                 sessions[msg].game.watchers.push(user)
                 socket.join("Watchers " + msg)
+                io.to(["Watchers " + msg, "players - " + msg]).emit("newViewer", sessions[msg].game.watchers.length)
             }
             sessions[msg].push(socket)
         }

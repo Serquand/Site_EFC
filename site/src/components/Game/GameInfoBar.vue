@@ -12,12 +12,22 @@
         >
             <img src="/assets/GamePanel/handshake.png" alt="drawProposal">
         </div>
-        <div class="viewer-count-container"></div>
+        <div class="viewer-count-container">
+            <p>{{ numberOfViewers }}</p>
+            <img src="/assets/GamePanel/oeil.png" alt="numberViewers" />
+        </div>
     </section>
 </template>
 
 <script>
 export default {
+    props: {
+        numberOfViewers: {
+            type: String, 
+            required: true
+        }
+    },
+
     methods: {
         sendGiveUp() {
             this.$emit("giveUp")

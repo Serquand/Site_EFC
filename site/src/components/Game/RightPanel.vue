@@ -1,5 +1,6 @@
 <template>
     <GameInfoBar 
+        :numberOfViewers="numberOfViewers"
         @giveUp="sendGiveUp"
         @drawProposal="sendDrawProposal"
     />
@@ -11,6 +12,13 @@ export default {
     components: {
         GameInfoBar
     }, 
+
+    props: {
+        numberOfViewers: {
+            type: String, 
+            required: true
+        }
+    },
 
     methods: {
         sendGiveUp() {

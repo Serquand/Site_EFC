@@ -19,7 +19,9 @@
                 ></div>
             </div>
         </div>
-        <RightPanel />
+        <RightPanel 
+            @giveUp="sendGiveUp"
+        />
         
         <div 
             class="modal modal-init"
@@ -466,7 +468,11 @@ export default {
         this.socket.close()
     },
 
-    methods: {        
+    methods: {       
+        sendGiveUp() {
+            this.socket.emit("giveUp")
+        }, 
+
         displayPgn(pgn) {
             let pgnTemp = pgn.split(".")
             pgnTemp.shift()

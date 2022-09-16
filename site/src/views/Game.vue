@@ -21,6 +21,7 @@
         </div>
         <RightPanel 
             @giveUp="sendGiveUp"
+            @drawProposal="sendDrawProposal"
         />
         
         <div 
@@ -472,6 +473,10 @@ export default {
         sendGiveUp() {
             this.socket.emit("giveUp")
         }, 
+
+        sendDrawProposal() {
+            this.socket.emit("askDraw")  
+        },
 
         displayPgn(pgn) {
             let pgnTemp = pgn.split(".")

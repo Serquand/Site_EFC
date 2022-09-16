@@ -1,6 +1,7 @@
 <template>
     <GameInfoBar 
         @giveUp="sendGiveUp"
+        @drawProposal="sendDrawProposal"
     />
 </template>
 
@@ -14,6 +15,10 @@ export default {
     methods: {
         sendGiveUp() {
             this.$emit("giveup");
+        }, 
+
+        sendDrawProposal() {
+            this.$emit("drawProposal");
         }
     }
 }

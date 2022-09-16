@@ -104,7 +104,7 @@ io.on("connection", socket => {
         })
 
         socket.on("message", message => handleChat(io, sessions, socket, msg, message))
-        socket.on("askDraw", () => console.log("Draw !"))
+        socket.on("askDraw", () => console.log("askDraw !"))
         socket.on("giveUp", () => console.log("giveUp !"))
         socket.on("confirmDraw", () => console.log("confirmDraw"))
 

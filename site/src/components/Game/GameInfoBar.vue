@@ -6,7 +6,12 @@
         >
             <img src="/assets/GamePanel/giveup.png" alt="giveUp" />
         </div>
-        <div class="draw-proposal"></div>
+        <div 
+            @click="sendDrawProposal"
+            class="draw-proposal"
+        >
+            <img src="/assets/GamePanel/handshake.png" alt="drawProposal">
+        </div>
         <div class="viewer-count-container"></div>
     </section>
 </template>
@@ -16,6 +21,10 @@ export default {
     methods: {
         sendGiveUp() {
             this.$emit("giveUp")
+        }, 
+
+        sendDrawProposal() {
+            this.$emit("drawProposal")
         }
     }
 }

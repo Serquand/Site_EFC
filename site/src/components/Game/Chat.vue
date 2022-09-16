@@ -54,6 +54,7 @@ export default {
                 }
             })
             this.typedMessage = ''
+            document.querySelector("textarea.new-message").style.height = 'auto'
         }, 
 
         resizeTextarea() {

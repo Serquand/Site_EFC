@@ -19,14 +19,7 @@
                 ></div>
             </div>
         </div>
-        <ul class="pgn-container">
-            <li 
-                :key="move" 
-                v-for="(move, index) in pgn"
-            >
-                {{ (index + 1) + ". " + move.split(" ")[0] + " | " +  (move.split(" ")[1] == undefined ? '' : move.split(" ")[1]) }}
-            </li>
-        </ul>
+        <RightPanel />
         
         <div 
             class="modal modal-init"
@@ -425,6 +418,7 @@ import { ref } from'vue'
 import { useAuthStore } from '../store/User'
 import router from '../router/index'
 import Chat from '../components/Game/Chat.vue'
+import RightPanel from '../components/Game/RightPanel.vue'
 
 export default {
     setup() {
@@ -464,7 +458,8 @@ export default {
     }, 
 
     components: {
-        Chat
+        Chat, 
+        RightPanel
     },
 
     beforeUnmount() {

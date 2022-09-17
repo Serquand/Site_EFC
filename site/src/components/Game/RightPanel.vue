@@ -1,16 +1,31 @@
 <template>
-    <GameInfoBar 
-        :numberOfViewers="numberOfViewers"
-        @giveUp="sendGiveUp"
-        @drawProposal="sendDrawProposal"
-    />
+    <div class="right-panel-container">
+        <GameInfoBar 
+            :numberOfViewers="numberOfViewers"
+            @giveUp="sendGiveUp"
+            @drawProposal="sendDrawProposal"
+        />
+        <BetMove @allMovesBet="displayMovesBet" />
+        <ModalBet />
+    </div>
 </template>
 
 <script>
-import GameInfoBar from './GameInfoBar.vue'; 
+import GameInfoBar from './GameInfoBar.vue';
+import BetMove from './BetMove.vue'; 
+import ModalBet from './ModalBet.vue';
+import { ref } from 'vue';
+
 export default {
+    setup() {
+        const displayModalMovesBet = ref(false)
+        return { displayModalMovesBet }
+    },
+
     components: {
-        GameInfoBar
+        GameInfoBar,
+        BetMove, 
+        ModalBet
     }, 
 
     props: {
@@ -21,6 +36,10 @@ export default {
     },
 
     methods: {
+        displayMovesBet() {
+            this.displayModalMovesBet = true
+        },
+
         sendGiveUp() {
             this.$emit("giveup");
         }, 

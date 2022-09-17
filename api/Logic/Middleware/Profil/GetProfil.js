@@ -4,9 +4,10 @@ import Sequelize from 'sequelize';
 const Op = Sequelize.Op
 
 export default async function getProfil(req, res, next) {
-    const profil = (await Players.findOne({ where: { Pseudo: req.params.user } })).dataValues, idPlayer = profil.id 
-    delete profil.id
-    delete profil.Password
+    const profil = (await Players.findOne({ 
+        where: { Pseudo: req.body.searchedUser }, 
+        attributes: ["Pseudo", "Elo", "maxElo", "pointsPrediction"] 
+    })).dataValues, idPlayer = profil.id 
     let allGames = new Array(0)
 
     const allGamesTemp = await Games.findAll({ 

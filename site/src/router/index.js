@@ -46,7 +46,7 @@ const routes = [
 
     },    
     {
-        path: '/profil/:userId', 
+        path: '/profil/:searchedUser', 
         name: 'Profil', 
         component: Profil,
         meta: { requireAuth: true }

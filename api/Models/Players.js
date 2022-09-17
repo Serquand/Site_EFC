@@ -37,7 +37,13 @@ export default sequelize.define("Player", {
     Password: {
         type: DataTypes.STRING,
         allowNull: false
-    }  
+    },
+
+    pointsPrediction: {
+        type: DataTypes.INTEGER, 
+        defaultValue: 0, 
+        allowNull: false
+    }
 }, {
     timestamps: false,
     sequelize, 

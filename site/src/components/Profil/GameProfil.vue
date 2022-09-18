@@ -26,7 +26,7 @@
         </div>
 
         <div class="result-container">
-            <div class="result">
+            <div :class="['result', game.result + '-result']">
                 <p>{{ game.result }}</p>
             </div>
         </div>
@@ -51,10 +51,53 @@ export default {
 
 <style>
     .color-container {
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
         background-position: center;
         background-size: contain;
+    }
+
+    .game-profil-container {
+        width: 40%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .player-container {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .player-container p {
+        cursor: pointer;
+    }
+
+    .player-container span:last-child {
+        font-size: 12px;
+        margin-left: 5px;
+    }
+
+    .result {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .L-result {
+        background-color: red;
+    }
+
+    .W-result {
+        background-color: green;   
+    }
+
+    .D-result {
+        background-color: blue;
     }
 
 </style>

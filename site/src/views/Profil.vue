@@ -4,9 +4,13 @@
 
 <script>
 import { url } from '../../config.json' 
+import { ref } from 'vue'
+
 export default {
     setup() {
+        const games = ref([]), profil = ref({})
 
+        return { games, profil }
     }, 
 
     async created() {

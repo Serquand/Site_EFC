@@ -1,5 +1,5 @@
 import Games from "../../Models/Games.js";
-import { pseudoWhoIdBelongs, resultToLetter } from './Profil/GetProfil.js';
+import { pseudoWhoIdBelongs } from './Profil/GetProfil.js';
 
 const convertPgnToArray = pgn => {
     let movesTab = new Array(0)

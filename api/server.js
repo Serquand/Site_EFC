@@ -11,6 +11,7 @@ import { v4 } from 'uuid'
 
 import setup from './Models/Setup.js'
 import Profil from './router/Profil.js'
+import review from './Logic/Middleware/Profil/ReviewGame.js'
 import { createParticularGame, handleChat, isTheGoodClient, isAuthentificated as auth } from './Logic/Game/WsFunctions.js'
 
 const app = express()
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 
 app.use("/profil", Profil)
+app.get("/review/:idGame", review)
 
 let sessions = {}, tempIdGame = null;
 let availableId = new Array(0)

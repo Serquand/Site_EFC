@@ -19,6 +19,26 @@ const resultToLetter = (game, user) => {
     return game.result == 1 ? 'L' : 'W'
 }
 
+const createDate = date => {
+    const sDate = date.toString()
+    console.log(sDate);
+    const months = {
+        Jan: 'janvier', 
+        Feb: 'février', 
+        Mar: 'mars',
+        Apr: 'avril', 
+        May: 'mai', 
+        Jun: 'juin', 
+        Jul: 'juillet', 
+        Aug: 'août', 
+        Sep: 'septembre', 
+        Oct: 'octobre', 
+        Nov: 'novembre', 
+        Dec: 'décembre'
+    }
+    return sDate.split(" ")[2] + " " + months[sDate.split(" ")[1]] + " " + sDate.split(" ")[3]
+}
+
 export default async function getProfil(req, res) {
     const profil = (await Players.findOne({ 
         where: { Pseudo: req.params.userSearched }, 
@@ -37,8 +57,9 @@ export default async function getProfil(req, res) {
     })
 
     for(let i = 0; i < allGamesTemp.length; i++) {
-        const game = allGamesTemp[i].dataValues
-        const numberMoves = game.pgn.split(".").length - 1
+        const game = allGamesTemp[i].dataValues, numberMoves = game.pgn.split(".").length - 1, date = createDate(game.createdAt)
+
+        delete game.createdAt
         delete game.updatedAt
         delete game.pgn
         
@@ -47,6 +68,7 @@ export default async function getProfil(req, res) {
         game.result = resultToLetter(game, req.params.userSearched)
         game.color = game.player1 == req.params.userSearched ? 'w' : 'b', 
         game.numberMoves = numberMoves
+        game.date = date
         allGames.push(game)
     }
     

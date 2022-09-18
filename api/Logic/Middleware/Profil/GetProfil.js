@@ -38,12 +38,15 @@ export default async function getProfil(req, res) {
 
     for(let i = 0; i < allGamesTemp.length; i++) {
         const game = allGamesTemp[i].dataValues
+        const numberMoves = game.pgn.split(".").length - 1
         delete game.updatedAt
         delete game.pgn
+        
         game.player1 = await pseudoWhoIdBelongs(game.player1)
         game.player2 = await pseudoWhoIdBelongs(game.player2)
         game.result = resultToLetter(game, req.params.userSearched)
-        game.color = game.player1 == req.params.userSearched ? 'w' : 'b'
+        game.color = game.player1 == req.params.userSearched ? 'w' : 'b', 
+        game.numberMoves = numberMoves
         allGames.push(game)
     }
     

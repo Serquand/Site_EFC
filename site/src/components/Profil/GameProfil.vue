@@ -5,6 +5,10 @@
             :style="`background-image: url('/assets/chess/${game.color}P.png')`"
         ></div>
 
+        <div class="date-container">
+            <p>{{ game.date }}</p>
+        </div>
+
         <div class="player-container">
             <p>
                 <span>{{ game.color == 'w' ? game.player1 : game.player2 }}</span>

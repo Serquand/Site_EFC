@@ -147,6 +147,7 @@ io.on("connection", socket => {
 
 
 httpServer.listen(PORT, async () => {
+    console.clear()
     await setup()
     console.log("We are listening on PORT :", PORT)
 })

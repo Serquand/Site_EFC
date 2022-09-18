@@ -3,15 +3,16 @@ import Games from '../../../Models/Games.js';
 import Sequelize from 'sequelize';
 const Op = Sequelize.Op
 
-const pseudoWhoIdBelongs = async id  => {
+export const pseudoWhoIdBelongs = async id  => {
     const userPseudo = await Players.findOne({
         where: { id }, 
         attributes: ['Pseudo']
     })
+
     return userPseudo.dataValues.Pseudo
 }
 
-const resultToLetter = (game, user) => {
+export const resultToLetter = (game, user) => {
     if(game.result == 0) return "D"
     if(user === game.player1) {
         return game.result == 1 ? 'W' : 'L'

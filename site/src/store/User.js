@@ -31,11 +31,8 @@ export const useAuthStore = defineStore({
         }, 
 
         async isLoggedIn() {
-            console.log(this.jwtToken);
             if(this.username == '' || this.jwtToken == '') return false
-            const optionsSearch = { 
-                headers: { 'Authorization': 'Bearer ' + this.jwtToken } 
-            }
+            const optionsSearch = { headers: { 'Authorization': 'Bearer ' + this.jwtToken } }
             const isLoggedInResult = await fetch(url + '/profil/auth/' + this.username, optionsSearch)
             if(isLoggedInResult.status == 200) return true
             this.logout()

@@ -46,14 +46,8 @@ export default sequelize.define("Game", {
         type: DataTypes.TEXT,
         allowNull: false, 
     }, 
-
-    dateGame: {
-        type: DataTypes.DATE, 
-        defaultValue: DataTypes.NOW,
-        allowNull: false    
-    }
 }, {
-    timestamps: false,
+    timestamps: true,
     sequelize, 
     modelName: "Game",
     tableName: 'Games',

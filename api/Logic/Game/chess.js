@@ -181,18 +181,6 @@ export default class Game {
         return idPseudo.dataValues.id 
     }
 
-    gameDate() {
-        const dateGame = new Date()
-        const month = dateGame.getMonth() < 10 ? "0" + dateGame.getMonth() : dateGame.getMonth()
-        const year = dateGame.getFullYear() < 10 ? "0" + dateGame.getFullYear() : dateGame.getFullYear()
-        const date = dateGame.getDate() < 10 ? "0" + dateGame.getDate() : dateGame.getDate()
-        const hours = dateGame.getHours() < 10 ? '0' + dateGame.getHours() : dateGame.getHours()
-        const minutes = dateGame.getMinutes() < 10 ? '0' + dateGame.getMinutes() : dateGame.getMinutes()
-        const seconds = dateGame.getSeconds() < 10 ? '0' + dateGame.getSeconds() : dateGame.getSeconds()
-        console.log(date + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds)
-        return date + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds
-    }
-
     async addGameInDb() {
         await Games.create({ 
             result: this.resultFirst,  
@@ -200,8 +188,7 @@ export default class Game {
             eloPlayer2: this.eloSecondPlayer, 
             player1: await this.putIdForPseudo(this.firstPlayer),
             player2: await this.putIdForPseudo(this.secondPlayer), 
-            pgn: this.game.pgn(), 
-            dateGame: this.gameDate()
+            pgn: this.game.pgn()
         })
     }
 

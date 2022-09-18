@@ -22,20 +22,20 @@ const resultToLetter = (game, user) => {
 const createDate = date => {
     const sDate = date.toString()
     const months = {
-        Jan: 'janvier', 
-        Feb: 'février', 
-        Mar: 'mars',
-        Apr: 'avril', 
-        May: 'mai', 
-        Jun: 'juin', 
-        Jul: 'juillet', 
-        Aug: 'août', 
-        Sep: 'septembre', 
-        Oct: 'octobre', 
-        Nov: 'novembre', 
-        Dec: 'décembre'
+        Jan: '01', 
+        Feb: '02', 
+        Mar: '03',
+        Apr: '04', 
+        May: '05', 
+        Jun: '06', 
+        Jul: '07', 
+        Aug: '08', 
+        Sep: '09', 
+        Oct: '10', 
+        Nov: '11', 
+        Dec: '12'
     }
-    return sDate.split(" ")[2] + " " + months[sDate.split(" ")[1]] + " " + sDate.split(" ")[3]
+    return sDate.split(" ")[2] + "/" + months[sDate.split(" ")[1]] + "/" + sDate.split(" ")[3]
 }
 
 export default async function getProfil(req, res) {

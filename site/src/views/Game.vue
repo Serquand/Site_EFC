@@ -95,11 +95,7 @@
         width: fit-content;
     }
 
-    .chessboard-main-container.rotate {
-        transform: rotate(180deg);
-    }
-
-    .chessboard-main-container.rotate div {
+    .chessboard-main-container.rotate, .chessboard-main-container.rotate div {
         transform: rotate(180deg);
     } 
 

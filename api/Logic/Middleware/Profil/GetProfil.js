@@ -43,6 +43,7 @@ export default async function getProfil(req, res) {
         game.player1 = await pseudoWhoIdBelongs(game.player1)
         game.player2 = await pseudoWhoIdBelongs(game.player2)
         game.result = resultToLetter(game, req.params.userSearched)
+        game.color = game.player1 == req.params.userSearched ? 'w' : 'b'
         allGames.push(game)
     }
     

@@ -21,7 +21,6 @@ const resultToLetter = (game, user) => {
 
 const createDate = date => {
     const sDate = date.toString()
-    console.log(sDate);
     const months = {
         Jan: 'janvier', 
         Feb: 'février', 

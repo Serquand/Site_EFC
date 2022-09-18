@@ -11,6 +11,7 @@ import MoreOnUs from '../views/MoreOnUs'
 import Game from '../views/Game'
 import Tournament from '../views/Tournament'
 import SendLink from '../views/SendLink'
+import Review from '../views/Review'
 
 
 import { useAuthStore } from '../store/User'
@@ -77,6 +78,11 @@ const routes = [
         path: '/:pathMatching(.*)*', 
         name: 'NotFound',
         component: NotFound, 
+    },
+    {
+        path: '/viewOld/:idGame', 
+        name: "Review a game", 
+        component: Review
     },
     {
         path: '/watchGame', 

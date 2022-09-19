@@ -8,13 +8,13 @@
             <div>{{ (n + 1) + "." }}</div>
             <div 
                 @click="goBackToPGN(n, 0)"
-                class="move-pgn-available"
+                :class="['move-pgn-available', (2 * n == wherePgn) ? 'actual-position' : '']"
             >
                 {{ exchange[0] }}
             </div>
             <div 
                 @click="goBackToPGN(n, 1)"
-                :class="exchange[1] ? 'move-pgn-available' : ''"
+                :class="[exchange[1] ? 'move-pgn-available' : '', , (2 * n + 1 == wherePgn) ? 'actual-position' : '']"
             >
                 {{ exchange[1] ?? "" }}
             </div>
@@ -38,6 +38,11 @@ export default {
     props: {
         pgn: {
             type: Array, 
+            required: true
+        }, 
+
+        wherePgn: {
+            type: Number, 
             required: true
         }
     },
@@ -80,7 +85,7 @@ export default {
         transition: all .4s ease;
     }
 
-    .move-pgn-available:hover {
+    .move-pgn-available:hover, .actual-position {
         color: black;
         background-color: #f1f1f1;
     }

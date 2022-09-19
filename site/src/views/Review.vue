@@ -27,11 +27,15 @@
         </div>
         <div class="panel-information">
 
-            <PGNLoader 
-                :key="pgn" 
-                :pgn="pgn" 
-                @reviewPgn="reviewPgn"
-            />
+            <div :key="pgn">
+                <PGNLoader  
+                    :key="numberTurn"
+                    @reviewPgn="reviewPgn"
+                    :pgn="pgn" 
+                    :wherePgn="numberTurn"
+                />
+            </div>
+
             <div class="review-nav-button">
                 <button @click="advanceInTheGame">Avancer</button>
                 <button @click="goBackInTheGame">Reculer</button>

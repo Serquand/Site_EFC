@@ -27,7 +27,11 @@
         </div>
         <div class="panel-information">
 
-            <PGNLoader :key="pgn" :pgn="pgn" />
+            <PGNLoader 
+                :key="pgn" 
+                :pgn="pgn" 
+                @reviewPgn="reviewPgn"
+            />
             <div class="review-nav-button">
                 <button @click="advanceInTheGame">Avancer</button>
                 <button @click="goBackInTheGame">Reculer</button>
@@ -69,6 +73,13 @@ export default {
     }, 
 
     methods: {
+        convertBoardToArray(board) {
+            this.board = new Array(0)
+            for(let i = 0; i < 8; i++) {
+                for(let j = 0; j < 8; j++) this.board.push(board[i][j])
+            }
+        }, 
+        
         goEndOfGame() {
             this.numberTurn = this.pgn.length - 1
             this.game = new Chess()
@@ -88,18 +99,15 @@ export default {
             this.convertBoardToArray(this.game.board())
         },
 
-        convertBoardToArray(board) {
-            this.board = new Array(0)
-            for(let i = 0; i < 8; i++) {
-                for(let j = 0; j < 8; j++) this.board.push(board[i][j])
-            }
-        }, 
-
         goBackInTheGame() {
             this.numberTurn--;
             this.game = new Chess()
             for(let i = 0; i <= this.numberTurn; i++) this.game.move(this.pgn[i])
             this.convertBoardToArray(this.game.board())
+        }, 
+
+        reviewPgn(payload) {
+            console.log(payload)
         }
     }
 }

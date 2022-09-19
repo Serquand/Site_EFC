@@ -6,8 +6,18 @@
             :key="n"
         >
             <div>{{ (n + 1) + "." }}</div>
-            <div class="move-pgn-available">{{ exchange[0] }}</div>
-            <div :class="exchange[1] ? 'move-pgn-available' : ''">{{ exchange[1] ?? "" }}</div>
+            <div 
+                @click="goBackToPGN(n, 0)"
+                class="move-pgn-available"
+            >
+                {{ exchange[0] }}
+            </div>
+            <div 
+                @click="goBackToPGN(n, 1)"
+                :class="exchange[1] ? 'move-pgn-available' : ''"
+            >
+                {{ exchange[1] ?? "" }}
+            </div>
         </div>
     </div>
 </template>
@@ -42,6 +52,10 @@ export default {
                 if(!newLink[1]) newLink.pop()
                 this.pgnOfGame.push(newLink)
             }
+        }, 
+
+        goBackToPGN(index, player) {
+            this.$emit("reviewPgn", index * 2 + player)
         }
     }
 }

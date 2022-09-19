@@ -1,5 +1,15 @@
 <template>
-    <h1>TEST</h1>
+    <div class="pgn-container">
+        <div
+            class="pgn-exchange-move"
+            v-for="(exchange, n) in pgnOfGame"
+            :key="n"
+        >
+            <div>{{ (n + 1) + "." }}</div>
+            <div class="move-pgn-available">{{ exchange[0] }}</div>
+            <div :class="exchange[1] ? 'move-pgn-available' : ''">{{ exchange[1] ?? "" }}</div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -38,5 +48,31 @@ export default {
 </script>
 
 <style>
+    .pgn-exchange-move {
+        display: flex;
+    }
+
+    .pgn-exchange-move > * {
+        border: 1px solid #f1f1f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 45px;
+    }
+
+    .move-pgn-available {
+        cursor: pointer;
+        transition: all .4s ease;
+    }
+
+    .move-pgn-available:hover {
+        color: black;
+        background-color: #f1f1f1;
+    }
+
+    .pgn-exchange-move :first-child {
+        width: 45px;
+    }
 
 </style>

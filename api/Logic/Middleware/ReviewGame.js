@@ -9,7 +9,7 @@ const convertPgnToArray = pgn => {
         temp[i] = temp[i].trim()
         const moveExchange = temp[i].split(" ")
         movesTab.push(moveExchange[0])
-        movesTab.push(moveExchange[1])
+        if(moveExchange[1]) movesTab.push(moveExchange[1])
     }
     return movesTab
 }

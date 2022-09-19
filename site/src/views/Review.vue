@@ -79,7 +79,7 @@ export default {
                 for(let j = 0; j < 8; j++) this.board.push(board[i][j])
             }
         }, 
-        
+
         goEndOfGame() {
             this.numberTurn = this.pgn.length - 1
             this.game = new Chess()
@@ -108,6 +108,11 @@ export default {
 
         reviewPgn(payload) {
             console.log(payload)
+            this.game = new Chess()
+            this.numberTurn = payload
+            console.log(this.pgn)
+            for(let i = 0; i <= payload; i++) this.game.move(this.pgn[i])
+            this.convertBoardToArray(this.game.board())
         }
     }
 }

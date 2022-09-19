@@ -77,7 +77,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     .app-main-container {
         position: absolute;
         top: 50%;

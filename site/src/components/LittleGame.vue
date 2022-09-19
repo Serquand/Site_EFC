@@ -37,7 +37,6 @@ export default {
 
     setup(props) { 
         const map = ref([]), infoGame = JSON.parse(JSON.stringify(props.information))
-        console.log(infoGame)
         return { map, infoGame }
     },  
 
@@ -64,7 +63,6 @@ export default {
 
 <style>
 .chessboard {
-    border: 1px solid black;
     display: grid;
     grid-template: repeat(8, 30px) / repeat(8, 30px);
 }

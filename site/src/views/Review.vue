@@ -1,34 +1,39 @@
 <template>
     <div class="review-main-container">
-        <div class="player-container">
-            <p>
-                <span>{{ secondPlayer }}</span>
-                <span>{{ '(' + secondElo + ')' }}</span>
-            </p>
-        </div>
+        <div class="chessboard-information">
+            <div class="player-container">
+                <p>
+                    <span>{{ secondPlayer }}</span>
+                    <span>{{ '(' + secondElo + ')' }}</span>
+                </p>
+            </div>
 
-        <div 
-            class="chessboard-review"
-            v-if="board"
-        >
-            <Chessboard 
-                :game="board"
-                :key="numberTurn"
-            /> 
+            <div 
+                class="chessboard-review"
+                v-if="board"
+            >
+                <Chessboard 
+                    :game="board"
+                    :key="numberTurn"
+                /> 
+            </div>
+            
+            <div class="player-container">
+                <p>
+                    <span>{{ firstPlayer }}</span>
+                    <span>{{ '(' + firstElo + ')' }}</span>
+                </p>
+            </div>
         </div>
-        
-        <div class="player-container">
-            <p>
-                <span>{{ firstPlayer }}</span>
-                <span>{{ '(' + firstElo + ')' }}</span>
-            </p>
-        </div>
+        <div class="panel-information">
 
-        <div class="nav-button">
-            <button @click="advanceInTheGame">Avancer</button>
-            <button @click="goBackInTheGame">Reculer</button>
-            <button @click="goBeginningOfGame">Début</button>
-            <button @click="goEndOfGame">Fin</button>
+            <PGNLoader :key="pgn" :pgn="pgn" />
+            <div class="review-nav-button">
+                <button @click="advanceInTheGame">Avancer</button>
+                <button @click="goBackInTheGame">Reculer</button>
+                <button @click="goBeginningOfGame">Début</button>
+                <button @click="goEndOfGame">Fin</button>
+            </div>
         </div>
     </div>
 </template>
@@ -38,6 +43,7 @@ import Chessboard from '../components/Game/Chessboard.vue'
 import { url } from '../../config.json'
 import { ref } from 'vue'
 import { Chess } from 'chess.js'
+import PGNLoader from '../components/Game/PGNLoader.vue'
 
 export default {
     setup() {
@@ -49,17 +55,17 @@ export default {
 
     async created() {
         const res = (await (await fetch(url + "/review/" + this.$route.params.idGame)).json()).reviewGame
-        console.log(res)
         this.pgn = res.pgn
-        this.convertBoardToArray(this.game.board())
         this.firstElo = res.eloPlayer1
         this.secondElo = res.eloPlayer2
         this.firstPlayer = res.player1
         this.secondPlayer = res.player2
+        this.convertBoardToArray(this.game.board())
     }, 
 
     components: {
-        Chessboard
+        Chessboard,
+        PGNLoader
     }, 
 
     methods: {
@@ -101,11 +107,21 @@ export default {
 
 <style>
     .review-main-container {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: fit-content;
     }
 
     .review-main-container .player-container:last-child {
         text-align: end;
+    }
+
+    .review-nav-button {
+        display: flex;
     }
 
 </style>
